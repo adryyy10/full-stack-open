@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+activate server
+Note right of browser: Contains new note as JSON data
+server-->>browser: 201 Response
+Note left of server: Server return HTTP 201 instead of 302
+deactivate server
