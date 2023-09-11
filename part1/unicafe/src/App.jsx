@@ -1,7 +1,14 @@
 import { useState } from 'react'
 
 const Button    = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
-const StatisticLine = (props) => <div key={props.id}>{props.text}: {props.value}</div>
+const StatisticLine = (props) => {
+    return (
+        <tr key={props.id}>
+            <td>{props.text}</td> 
+            <td>{props.value}</td>
+        </tr>
+    )
+}
 const Statistics = (props) => {
     const all = props.data.filter((statistic) => statistic.text === 'All')
     if (all[0].value === 0) {
@@ -13,9 +20,18 @@ const Statistics = (props) => {
     }
     return (
         <div>
-            {props.data.map((statistic) => (
-                <StatisticLine key={statistic.id} text={statistic.text} value={statistic.value} />
-            ))}
+            <table>
+                <thead>    
+                    <tr>
+                        <th><h1>{props.title}</h1></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {props.data.map((statistic) => (
+                        <StatisticLine key={statistic.id} text={statistic.text} value={statistic.value} />
+                    ))}
+                </tbody>
+            </table>
         </div>
     )
 }
@@ -89,9 +105,8 @@ const App = () => {
             <Button
                 handleClick={increaseBad}
                 text='Bad'
-            />  
-            <h1>Statistics</h1>
-            <Statistics data={statistics} />
+            />
+            <Statistics title={'Statistics'} data={statistics} />
         </div>
 
             
