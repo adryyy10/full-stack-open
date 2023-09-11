@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 const Button    = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
+const StatisticLine = (props) => <div key={props.id}>{props.text}: {props.value}</div>
 const Statistics = (props) => {
     const all = props.data.filter((statistic) => statistic.text === 'All')
     if (all[0].value === 0) {
@@ -13,13 +14,7 @@ const Statistics = (props) => {
     return (
         <div>
             {props.data.map((statistic) => (
-                <div key={statistic.id}>
-                    {statistic.text}: {(isNaN(statistic.value)) 
-                                            ? 0 
-                                            : statistic.value} {(statistic.text === 'Positive') 
-                                                                    ? '%' 
-                                                                    : ''}
-                </div>
+                <StatisticLine key={statistic.id} text={statistic.text} value={statistic.value} />
             ))}
         </div>
     )
