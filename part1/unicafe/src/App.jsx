@@ -2,6 +2,14 @@ import { useState } from 'react'
 
 const Button    = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
 const Statistics = (props) => {
+    const all = props.data.filter((statistic) => statistic.text === 'All')
+    if (all[0].value === 0) {
+        return (
+            <div>
+                No feedback given.
+            </div>
+        )
+    }
     return (
         <div>
             {props.data.map((statistic) => (
