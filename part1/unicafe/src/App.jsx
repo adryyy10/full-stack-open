@@ -1,5 +1,22 @@
 import { useState } from 'react'
 
+const Button    = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
+const Statistics = (props) => {
+    return (
+        <div>
+            {props.data.map((statistic) => (
+                <div key={statistic.id}>
+                    {statistic.text}: {(isNaN(statistic.value)) 
+                                            ? 0 
+                                            : statistic.value} {(statistic.text === 'Positive') 
+                                                                    ? '%' 
+                                                                    : ''}
+                </div>
+            ))}
+        </div>
+    )
+}
+
 const App = () => {
     const [good, setGood]       = useState(0)
     const [neutral, setNeutral] = useState(0)
@@ -22,14 +39,38 @@ const App = () => {
         setAverage(average-1)
     }
 
-    const Button    = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
-    const Display   = ({counter, text}) => {
-        return (all === 0) 
-            ? <div>{text}: 0</div> 
-            : (text === 'Positive')
-                ? <div>{text}: {counter*100}%</div>
-                : <div>{text}: {counter}</div>
-    }
+    const statistics = [
+        {
+            id: 1,
+            text: 'Good',
+            value: good
+        },
+        {
+            id: 2,
+            text: 'Neutral',
+            value: neutral
+        },
+        {
+            id: 3,
+            text: 'Bad',
+            value: bad
+        },
+        {
+            id: 4,
+            text: 'All',
+            value: all
+        },
+        {
+            id: 5,
+            text: 'Average',
+            value: average/all
+        },
+        {
+            id: 6,
+            text: 'Positive',
+            value: good/all
+        },
+    ]
 
     return (
         <div>
@@ -47,12 +88,7 @@ const App = () => {
                 text='Bad'
             />  
             <h1>Statistics</h1>
-            <Display text={'Good'} counter={good}/>
-            <Display text={'Neutral'} counter={neutral}/>
-            <Display text={'Bad'} counter={bad}/>
-            <Display text={'All'} counter={all}/>
-            <Display text={'Average'} counter={average/all}/>
-            <Display text={'Positive'} counter={good/all}/>
+            <Statistics data={statistics} />
         </div>
 
             
