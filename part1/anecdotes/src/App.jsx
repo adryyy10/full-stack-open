@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Button    = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
-const Display   = ({anecdote}) => <div>{anecdote}</div>
+const Display   = ({header, text}) => <div><h1>{header}</h1>{text}</div>
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -16,18 +16,34 @@ const App = () => {
   const [selected, setSelected] = useState(0)
   const points = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 }
   const [pointer, setPointer] = useState({...points})
+  const [mostVotedPointer, setMostVotedPointer] = useState()
 
   const generateRandomAnecdote = () => {
     const randomIndex = Math.floor(Math.random() * anecdotes.length);
     setSelected(randomIndex)
-}
+  }
+
+  const voteRandomAnecdote = () => {
+    setPointer((prevPointer) => ({
+      ...prevPointer,
+      [selected]: prevPointer[selected] + 1,
+    }));
+  };
+  
+  // Use it for solving 'Update of the state is asynchronous' problem
+  useEffect(() => {
+    const maxValue = Math.max(...Object.values(pointer));
+    setMostVotedPointer(Object.keys(pointer).find((key) => pointer[key] === maxValue));
+  }, [pointer]);
 
   return (
     <div>
-        Has {pointer[selected]} votes
-        <Button handleClick={() => setPointer({...pointer, [selected]: pointer[selected] + 1})} text={'Vote'} />
+        <Display header={'Anecdote of the day'} text={anecdotes[selected]} />
+        <Display header={''} text= {'Has ' + pointer[selected] + ' votes'}/>
+        <Button handleClick={voteRandomAnecdote} text={'Vote'} />
         <Button handleClick={generateRandomAnecdote} text={'Next anecdote'} />
-        <Display anecdote={anecdotes[selected]} />
+
+        <Display header={'Anecdote with most votes'} text={anecdotes[mostVotedPointer]} />
     </div>
   )
 }
